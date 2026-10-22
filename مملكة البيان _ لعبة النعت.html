@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مملكة البيان | لعبة النعت</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@500;700;800&family=Lalezar&display=swap">
+<style>
+:root{--s1:#fff6bf;--s2:#f6d36b;--p1:#fffcec;--p2:#fbeaa6;--ink:#4a3a10;--ink2:#7d6420;--ln:#d39b1c;--y1:#ffec8a;--y2:#f7b928;--ok:#5aa84f;--bad:#d9573f;--bi:#4f3b05;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#3a3010;--s2:#1f1a08;--p1:#4a3d14;--p2:#372c0d;--ink:#fff3c4;--ink2:#e6cd7a;--ln:#e8b83a;color-scheme:dark}}
+:root[data-theme="dark"]{--s1:#3a3010;--s2:#1f1a08;--p1:#4a3d14;--p2:#372c0d;--ink:#fff3c4;--ink2:#e6cd7a;--ln:#e8b83a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;font-family:'Cairo',Tahoma,sans-serif;color:var(--ink);line-height:1.8;background:radial-gradient(circle,rgba(255,255,255,.28) 2px,transparent 2.5px) 0 0/30px 30px,linear-gradient(var(--s1),var(--s2)) fixed;background-color:var(--s2)}
+button{font:inherit;cursor:pointer;color:inherit}
+.wrap{width:min(760px,calc(100% - 24px));margin:0 auto;padding:14px 0 50px}
+.panel{background:linear-gradient(var(--p1),var(--p2));border:3px solid var(--ln);border-bottom-width:7px;border-radius:22px;padding:16px}
+.btn{font-family:'Lalezar','Cairo',sans-serif;font-size:1.2rem;color:var(--bi);padding:8px 24px;border:3px solid var(--ln);border-bottom-width:7px;border-radius:16px;background:linear-gradient(var(--y1),var(--y2));box-shadow:inset 0 3px 0 rgba(255,255,255,.6);transition:.1s}
+.btn:active{transform:translateY(3px);border-bottom-width:4px}.btn.alt{background:linear-gradient(var(--p1),var(--p2));color:var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.hud{display:flex;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;padding:8px 12px;margin-bottom:14px}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:26px;border:3px solid var(--ln);background:radial-gradient(circle at 35% 30%,#fff3b0,var(--y2))}
+.hm{flex:1;min-width:0;font-family:'Lalezar',sans-serif;line-height:1.3}
+.track{height:12px;border-radius:9px;background:rgba(211,155,28,.28);border:2px solid var(--ln);overflow:hidden}.track i{display:block;height:100%;background:linear-gradient(var(--y1),var(--y2));transition:width .4s}
+.chip{font-weight:800;border:3px solid var(--ln);border-radius:12px;padding:0 9px;background:var(--p1);white-space:nowrap}
+.hero{text-align:center;padding:6px 0 4px}
+.crown{font-size:58px;display:inline-block;animation:fl 3s ease-in-out infinite}
+.logo{font:400 clamp(2.6rem,10vw,4.2rem)/1.2 'Lalezar',sans-serif;margin:0;color:#ffe066;-webkit-text-stroke:2px #b8860b;paint-order:stroke fill;text-shadow:0 5px 0 #b8860b,0 9px 16px rgba(247,185,40,.6)}
+.sub{margin:6px 0 0;color:var(--ink2);font-weight:700}
+.map{list-style:none;margin:20px 0 0;padding:0;position:relative;display:grid;gap:22px;justify-items:center}
+.map:before{content:"";position:absolute;top:30px;bottom:30px;left:calc(50% - 4px);border-left:8px dotted rgba(211,155,28,.55)}
+.node{display:grid;justify-items:center;position:relative;transform:translateX(var(--x))}
+.nb{width:90px;height:90px;border-radius:50%;font-size:40px;display:grid;place-items:center;border:4px solid var(--ln);border-bottom-width:9px;background:radial-gradient(circle at 35% 30%,#fff7c2,var(--y2));box-shadow:inset 0 5px 0 rgba(255,255,255,.55)}
+.node.lock .nb{background:#e9e0bd;filter:grayscale(.8);cursor:not-allowed}.node.cur .nb{animation:pulse 1.5s infinite}
+.nl{font:400 1.1rem 'Lalezar',sans-serif;margin-top:6px;padding:0 12px;border:3px solid var(--ln);border-radius:12px;background:var(--p1)}.st{letter-spacing:2px;font-size:.95rem}
+.owl{display:flex;gap:12px;align-items:flex-start}.owl .e{font-size:62px;animation:fl 3s ease-in-out infinite}.bubble{flex:1}
+h2{font:400 1.7rem 'Lalezar',sans-serif;margin:0 0 8px}h3{font:400 1.25rem 'Lalezar',sans-serif;margin:16px 0 6px}p{margin:6px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:12px 0}
+.card{background:var(--p1);border:3px solid var(--ln);border-radius:16px;padding:10px 12px}.card b{display:block}
+.ex{text-align:center;margin:12px 0;padding:10px;border:3px dashed var(--ln);border-radius:16px}.ex .s{font:700 1.6rem 'Amiri',serif}
+mark{background:linear-gradient(var(--y1),var(--y2));color:var(--bi);border-radius:8px;padding:0 8px}
+.tip{border-right:6px solid var(--y2);background:rgba(246,184,46,.18);border-radius:12px;padding:8px 14px;margin:12px 0}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}th,td{border:2px solid var(--ln);padding:6px 10px;text-align:right}th{background:linear-gradient(var(--y1),var(--y2));color:var(--bi)}
+.qtop{display:flex;align-items:center;gap:10px;margin-bottom:14px}.qtop .track{flex:1}.x{border:3px solid var(--ln);border-radius:12px;background:var(--p1);width:38px;height:38px}
+.hearts{letter-spacing:2px;font-size:1.2rem}.mon{font-size:64px;text-align:center;animation:fl 2.4s ease-in-out infinite}.qbox h2{font-size:1.4rem;text-align:center;font-family:'Cairo',sans-serif;font-weight:800}
+.opts{display:grid;gap:10px;margin-top:12px}.opt{text-align:right;font-weight:700;padding:10px 14px;border:3px solid var(--ln);border-bottom-width:6px;border-radius:14px;background:var(--p1)}
+.opt:not(:disabled):hover{background:var(--y1);color:var(--bi)}.opt.good{background:var(--ok);color:#fff}.opt.bad{background:var(--bad);color:#fff;animation:sh .35s}
+.fb{margin-top:14px;animation:up .25s}.fb.g{border-color:var(--ok)}.fb.b{border-color:var(--bad)}.fb .btn{margin-top:6px}
+.res{text-align:center}.big{font-size:70px;animation:fl 2s ease-in-out infinite}.stars{font-size:2.4rem;letter-spacing:6px}
+.foot{text-align:center;color:var(--ink2);font-size:.85rem;margin-top:18px}.foot b{color:var(--ink)}
+body:before,body:after{position:fixed;font-size:30px;opacity:.6;pointer-events:none;animation:fl 4s ease-in-out infinite}body:before{content:"✨";top:16%;left:5%}body:after{content:"🪙";bottom:12%;right:5%;animation-delay:1s}@keyframes fl{50%{transform:translateY(-8px)}}@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(246,184,46,.45)}}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}@keyframes up{from{opacity:0;transform:translateY(10px)}}
+@media(max-width:460px){.node{transform:translateX(calc(var(--x)*.5))}.owl .e{font-size:44px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="hud"></div><div id="app"></div></div>
+<script>
+const L=[
+{n:'بوابة التوابع',i:'🚪',m:'👻',say:'أهلًا بك أيها الفارس! في مملكة البيان تسير الكلمات في مواكب، ومن هذه المواكب «التوابع».',
+learn:`<h3>🔍 تأمّل ثم استنتج</h3><div class="ex"><div class="s">جاء الطالبُ <mark>المجتهدُ</mark> · رأيتُ الطالبَ <mark>المجتهدَ</mark> · سلّمتُ على الطالبِ <mark>المجتهدِ</mark></div>الكلمة الملوّنة غيّرت حركتها في كل جملة لتوافق الاسم الذي قبلها.</div><p>الألفاظ التي تلحق بما قبلها فتأخذ إعرابه تسمّى <b>التوابع</b>: تُرفع إن رُفع متبوعها، وتُنصب إن نُصب، وتُجرّ إن جُرّ.</p><div class="cards"><div class="card"><b>🧩 التوابع أربعة</b>النعت، والعطف، والتوكيد، والبدل.</div><div class="card"><b>🎯 النعت (الصفة)</b>تابع يبيّن صفة في متبوعه؛ فيخصّص النكرة ويوضّح المعرفة.</div></div>
+<div class="ex"><div class="s">قرأتُ كتابًا <mark>مفيدًا</mark>.</div>كتابًا: منعوت · مفيدًا: نعت منصوب تبع منعوته.</div>
+<div class="tip"><b>قاعدة الذهب:</b> النعت يتبع منعوته في الإعراب: مرفوع مع المرفوع، ومنصوب مع المنصوب، ومجرور مع المجرور.</div>
+<p>«رجلٌ كريمٌ» خصّصنا النكرة، و«محمدٌ الكريمُ» وضّحنا المعرفة.</p>`,
+q:[['كم عدد التوابع في العربية؟',['ثلاثة','أربعة','خمسة'],1,'التوابع أربعة: النعت، والعطف، والتوكيد، والبدل.'],
+['في «قرأتُ كتابًا مفيدًا» ما المنعوت؟',['قرأتُ','مفيدًا','كتابًا'],2,'«كتابًا» هو الاسم الموصوف، أمّا «مفيدًا» فهو النعت.'],
+['ماذا يفعل النعت إذا جاء بعد نكرة مثل «رجلٌ كريمٌ»؟',['يخصّصها','يؤكّدها','يُبدلها من غيرها'],0,'النعت يخصّص النكرة ويوضّح المعرفة؛ فـ«كريم» قلّل احتمالات «رجل».'],
+['في «سلّمتُ على الطالبِ المجتهدِ» لماذا جُرّ «المجتهدِ»؟',['لأنه تابع لـ«الطالبِ» المجرور','لأنه مفعول به','لأنه فعل'],0,'التابع يأخذ إعراب متبوعه، و«الطالبِ» مجرور بـ«على».']]},
+{n:'النعت المفرد',i:'✒️',m:'🦂',say:'النعت المفرد هو ما ليس جملة ولا شبه جملة. و«مفرد» اصطلاح، فقد يكون مثنى أو جمعًا!',
+learn:`<h3>🔍 تأمّل</h3><div class="ex"><div class="s">﴿وَلَعَبْدٌ <mark>مُّؤْمِنٌ</mark> خَيْرٌ مِّن مُّشْرِكٍ﴾</div>(البقرة: ٢٢١)<div class="s">﴿وَأَنزَلْنَا مِنَ السَّمَاءِ مَاءً <mark>طَهُورًا</mark>﴾</div>(الفرقان: ٤٨)<div class="s">﴿فِي جَنَّةٍ <mark>عَالِيَةٍ</mark>﴾</div>(الحاقة: ٢٢)</div><p>الكلمات الملوّنة وصفت ما قبلها، وجاءت <b>كلمة واحدة</b> تتبعه في الإعراب (رفعًا ونصبًا وجرًّا) وفي التنكير والتذكير والتأنيث. ليست جملة ولا شبه جملة، فهي <b>نعت مفرد</b>.</p><div class="ex"><div class="s">رفع الطفلُ علمًا <mark>فلسطينيًّا</mark>.</div>فلسطينيًّا: نعت منصوب بالفتحة تبع «علمًا».</div><div class="ex"><div class="s">نجح الطالبُ <mark>المجتهدُ</mark>.</div>المجتهدُ: نعت مرفوع بالضمة؛ لأنه تبع «الطالبُ».</div>
+<div class="tw"><table><tr><th>الجملة</th><th>النعت</th><th>إعرابه</th></tr>
+<tr><td>شاهدتُ منظرًا جميلًا.</td><td>جميلًا</td><td>نعت منصوب بالفتحة</td></tr>
+<tr><td>مررتُ بحديقةٍ جميلةٍ.</td><td>جميلةٍ</td><td>نعت مجرور بالكسرة</td></tr>
+<tr><td>وصلتْ طالبتانِ مجتهدتانِ.</td><td>مجتهدتانِ</td><td>نعت مرفوع بالألف؛ لأنه مثنى</td></tr>
+<tr><td>حضر المعلمونَ المخلصونَ.</td><td>المخلصونَ</td><td>نعت مرفوع بالواو؛ لأنه جمع مذكر سالم</td></tr></table></div>
+<div class="tip"><b>فخ الممنوع من الصرف:</b> «أزرق» صفة على وزن «أفعل»، فتُجرّ بالفتحة: «كتبتُ بقلمٍ أزرقَ». أمّا مع «أل» فتُجرّ بالكسرة: «بالقلمِ الأزرقِ».</div>`,
+q:[['في «اشتريتُ قلمًا أزرقَ» ما النعت؟',['اشتريتُ','أزرقَ','قلمًا'],1,'«أزرقَ» وصف «قلمًا» وتبعه في النصب.'],
+['إعراب «المخلصونَ» في «حضر المعلمونَ المخلصونَ»:',['نعت مرفوع بالواو؛ لأنه جمع مذكر سالم','نعت مرفوع بالضمة','خبر مرفوع بالواو'],0,'يتبع «المعلمونَ» المرفوع بالواو، فيُرفع بالواو مثله.'],
+['علامة جرّ «أزرقَ» في «كتبتُ بقلمٍ أزرقَ»:',['الكسرة','الفتحة نيابةً عن الكسرة','الياء'],1,'ممنوع من الصرف (صفة على وزن أفعل)، فيُجرّ بالفتحة ما لم يُعرَّف بـ«أل» أو يُضَف.'],
+['في ﴿وَأَنزَلْنَا مِنَ السَّمَاءِ مَاءً طَهُورًا﴾ إعراب «طَهُورًا»:',['حال منصوب','نعت منصوب بالفتحة','مفعول به ثانٍ'],1,'وصف النكرة «ماءً» وتبعها في النصب والتنكير.']]},
+{n:'نعت الجملة وشبه الجملة',i:'📜',m:'🐍',say:'قد يكون الوصف جملة كاملة أو شبه جملة! لكن احذر؛ لها شروط.',
+learn:`<h3>🔍 تأمّل: هل يأتي النعت جملة أو شبه جملة؟</h3><div class="ex"><div class="s">﴿وَاتَّقُوا يَوْمًا <mark>تُرْجَعُونَ فِيهِ</mark> إِلَى اللَّهِ﴾</div>(البقرة: ٢٨١)<div class="s">﴿لَقَدْ جَاءَكُمْ رَسُولٌ <mark>مِّنْ أَنفُسِكُمْ</mark>﴾</div>(التوبة: ١٢٨)</div><p>الأولى جملة فعلية في محل نصب نعت لـ«يومًا» والرابط الهاء، والثانية شبه جملة في محل رفع نعت لـ«رسولٌ». فالجواب: نعم، يأتي النعت جملةً أو شبه جملة، ويأخذ <b>محلّ</b> منعوته الإعرابي.</p><div class="ex"><div class="s">التحقتُ بفريقٍ <mark>لاعبوه ماهرون</mark>.</div>جملة اسمية في محل جر نعت لـ«فريقٍ»، والرابط الهاء.</div><div class="cards"><div class="card"><b>① جملة فعلية</b>رأيتُ طفلًا <mark>يلعبُ في الحديقة</mark>.</div><div class="card"><b>② جملة اسمية</b>زرتُ حديقةً <mark>أزهارُها جميلةٌ</mark>.</div><div class="card"><b>③ جار ومجرور</b>شاهدتُ عصفورًا <mark>على الغصن</mark>.</div><div class="card"><b>④ ظرف</b>رأيتُ طائرًا <mark>فوقَ الشجرة</mark>.</div></div>
+<h3>🗝️ شرطان للنعت الجملة</h3><p>١. أن يكون المنعوت نكرة (أو شبيهًا بها).</p><p>٢. أن تشتمل الجملة على رابط يعود على المنعوت (ضمير ظاهر أو مستتر).</p>
+<div class="ex"><div class="s">جاء رجلٌ <mark>يسألُ عن الطريق</mark>.</div>جملة فعلية في محل رفع نعت لـ«رجل»، والفاعل ضمير مستتر تقديره «هو».</div>
+<div class="tip">الجمل بعد النكرات صفات، وبعد المعارف أحوال.</div>`,
+q:[['«رأيتُ بيتًا أبوابُه واسعةٌ»: جملة «أبوابُه واسعةٌ» هي:',['نعت مفرد','جملة اسمية في محل نصب نعت','جملة لا محل لها'],1,'جاءت بعد نكرة «بيتًا» وفيها رابط (الهاء) يعود عليه، فهي نعت في محل نصب.'],
+['«جاء رجلٌ يسألُ عن الطريق»: جملة «يسألُ عن الطريق»:',['في محل نصب حال','لا محل لها من الإعراب','في محل رفع نعت'],2,'المنعوت «رجلٌ» مرفوع نكرة، فجملة النعت في محل رفع.'],
+['في «شاهدتُ عصفورًا على الغصن» «على الغصن» هو:',['شبه جملة في محل نصب نعت','مفعول به','خبر'],0,'جار ومجرور جاء بعد نكرة، فهو نعت في محل نصب متعلّق بمحذوف.'],
+['في «التحقتُ بفريقٍ لاعبوه ماهرون» جملة «لاعبوه ماهرون»:',['جملة اسمية في محل جر نعت','جملة فعلية في محل نصب حال','لا محل لها'],0,'جاءت بعد نكرة «فريقٍ» المجرورة وفيها رابط (الهاء)، فهي نعت في محل جر.'],
+['﴿وَاتَّقُوا يَوْمًا تُرْجَعُونَ فِيهِ﴾ جملة «تُرْجَعُونَ فِيهِ»:',['في محل نصب نعت لـ«يومًا»','في محل رفع خبر','في محل جر مضاف إليه'],0,'المنعوت «يومًا» نكرة منصوب، والرابط الهاء في «فيه».']]},
+{n:'النعت السببي',i:'🔗',m:'🦇',say:'النعت السببي ماكر! لا يصف المنعوت نفسه، بل شيئًا متصلًا به.',
+learn:`<div class="ex"><div class="s">هذا رجلٌ <mark>كريمٌ</mark> خُلُقُه.</div>«كريم» يصف الخُلُق لا الرجل مباشرةً، والخُلُق مرتبط بالرجل.</div>
+<div class="tw"><table><tr><th>الوجه</th><th>القاعدة</th></tr><tr><td>الإعراب</td><td>يتبع المنعوت</td></tr><tr><td>التعريف والتنكير</td><td>يتبع المنعوت</td></tr><tr><td>التذكير والتأنيث</td><td>يوافق الاسم الذي بعده</td></tr><tr><td>العدد</td><td>يبقى مفردًا دائمًا</td></tr></table></div>
+<div class="ex"><div class="s">مررتُ بفتاةٍ <mark>جميلٍ</mark> وجهُها.</div>«جميلٍ» نعت سببي مجرور تبع «فتاةٍ»، وجاء مذكرًا لأن «وجه» مذكر، و«وجهُها» فاعل مرفوع.</div>
+<div class="tip">«الفتاةُ الجميلةُ» نعت حقيقي يصف الفتاة، و«الفتاةُ الجميلُ وجهُها» نعت سببي يصف وجهها.</div>`,
+q:[['في «قرأتُ قصةً ممتعًا أسلوبُها» النعت السببي «ممتعًا» يصف:',['القصة مباشرةً','الأسلوب','القارئ'],1,'الصفة للأسلوب المتعلّق بالقصة، لا للقصة نفسها.'],
+['لماذا جاء «ممتعًا» مذكرًا مع أن «قصة» مؤنثة؟',['خطأ نحوي','لأنه حال','لأنه يوافق الاسم الذي بعده «أسلوب» في التذكير'],2,'يطابق المنعوت في الإعراب والتعريف/التنكير، ويوافق ما بعده في التذكير والتأنيث.'],
+['«جاء رجلانِ كريمٌ أبوهما»: لماذا بقي «كريمٌ» مفردًا؟',['لأن النعت السببي يلزم الإفراد','لأنه خبر','لأن «رجلان» مفرد'],0,'النعت السببي يبقى مفردًا مهما كان المنعوت.']]},
+{n:'المطابقة والإعراب',i:'⚖️',m:'🐲',say:'للنعت الحقيقي قانون صارم: يطابق منعوته في أربعة أمور.',
+learn:`<div class="tip"><b>قاعدة ٤ من ١٠:</b> للإعراب ثلاث حالات، وللتعريف والتنكير حالتان، وللتذكير والتأنيث حالتان، وللعدد ثلاث حالات؛ فالمجموع عشرة أمور، والنعت الحقيقي يوافق منعوته في أربعة منها: واحد من كل مجموعة.</div><div class="cards"><div class="card"><b>١ الإعراب</b>رفع · نصب · جر</div><div class="card"><b>٢ التعريف/التنكير</b></div><div class="card"><b>٣ التذكير/التأنيث</b></div><div class="card"><b>٤ العدد</b>إفراد · تثنية · جمع</div></div>
+<div class="tw"><table><tr><th>المنعوت</th><th>النعت</th><th>المطابقة</th></tr><tr><td>طالبٌ</td><td>مجتهدٌ</td><td>مفرد مذكر نكرة مرفوع</td></tr><tr><td>الطالبتانِ</td><td>المجتهدتانِ</td><td>مثنى مؤنث معرفة مرفوع</td></tr><tr><td>الطالباتُ</td><td>المتفوقاتُ</td><td>جمع مؤنث سالم معرفة مرفوع</td></tr></table></div>
+<h3>🧭 أعرب في 4 خطوات</h3><p>حدّد المنعوت ← حدّد موقعه وعلامته ← تأكّد أنه ليس خبرًا ولا حالًا ← أعرب واذكر العلامة.</p>
+<div class="tw"><table><tr><th>التركيب</th><th>الكلمة</th><th>السبب</th></tr><tr><td>الطالبُ النشيطُ محبوبٌ.</td><td>نعت</td><td>وصف معرفة وتبعها</td></tr><tr><td>الطالبُ نشيطٌ.</td><td>خبر</td><td>أتمّ معنى الجملة الاسمية</td></tr><tr><td>جاء الطالبُ مسرعًا.</td><td>حال</td><td>بيّن الهيئة وقت المجيء</td></tr></table></div>`,
+q:[['«جاءت الطالبتانِ المجتهدتانِ»: تطابق النعت والمنعوت في:',['الإعراب فقط','التذكير فقط','الإعراب والتعريف والتأنيث والتثنية'],2,'النعت الحقيقي يطابق منعوته في الإعراب، والتعريف/التنكير، والتذكير/التأنيث، والإفراد/التثنية/الجمع.'],
+['«عاد المسافرُ المتعبُ»: كلمة «المتعبُ»:',['حال منصوب','نعت مرفوع','خبر مرفوع'],1,'وصفت معرفة وتبعتها في التعريف والرفع، فهي نعت.'],
+['«عاد المسافرُ متعبًا»: كلمة «متعبًا»:',['حال منصوب','نعت مرفوع','مفعول به'],0,'نكرة منصوبة تبيّن هيئة المسافر وقت العودة، فهي حال.'],
+['كم أمرًا يطابق فيه النعت الحقيقي منعوته من الأمور العشرة؟',['اثنين','أربعة','عشرة'],1,'واحد من كل مجموعة: الإعراب، والتعريف/التنكير، والتذكير/التأنيث، والعدد.']]},
+{n:'أخطاء شائعة',i:'🕵️',m:'👹',say:'في هذه الغابة أربعة فخاخ يقع فيها الطلاب. هل ستنجو؟',
+learn:`<div class="card"><b>🪤 الفخ ١: «مفرد» تعني واحدًا</b>المقصود: ليس جملة ولا شبه جملة، وقد يكون مثنى أو جمعًا.</div><div class="card" style="margin-top:8px"><b>🪤 الفخ ٢: كل جملة بعد اسم نعت</b>بعد المعرفة تكون حالًا غالبًا: «جاء الرجلُ يبتسمُ» ← «يبتسم» في محل نصب حال.</div><div class="card" style="margin-top:8px"><b>🪤 الفخ ٣: خلط الحقيقي بالسببي</b>«رجلٌ كريمٌ» الصفة للرجل. «رجلٌ كريمٌ خُلُقُه» الصفة للخُلُق.</div><div class="card" style="margin-top:8px"><b>🪤 الفخ ٤: نسيان العلامة</b>لا تقل «نعت مرفوع» فقط؛ قل: «وعلامة رفعه الألف لأنه مثنى».</div>`,
+q:[['«جاء الرجلُ يبتسمُ»: جملة «يبتسمُ»:',['نعت في محل رفع','حال في محل نصب','لا محل لها'],1,'الجملة بعد المعرفة تكون حالًا في الغالب.'],
+['معنى «مفرد» في باب النعت المفرد:',['واحد فقط','مذكر فقط','ليس جملة ولا شبه جملة'],2,'قد يكون النعت المفرد مثنى أو جمعًا.'],
+['في «وصلت الطالبتانِ المجتهدتانِ» أيّ إعراب لـ«المجتهدتانِ» أدق؟',['نعت','نعت مرفوع','نعت مرفوع وعلامة رفعه الألف لأنه مثنى'],2,'اذكر الموقع وعلامة الإعراب وسببها.']]},
+{n:'التحدّي النهائي',i:'👑',m:'🐉',say:'وصلتَ إلى عرين التنين! أجب عن سبعة أسئلة بثلاثة قلوب لتنال التاج.',
+learn:`<div class="tip"><b>عُدّة المعركة:</b><br>• النعت يتبع منعوته في الإعراب.<br>• النعت يوضّح المعرفة ويخصّص النكرة.<br>• المفرد = ليس جملة ولا شبه جملة.<br>• الجملة بعد نكرة نعت، وبعد معرفة حال.<br>• السببي يتبع في الإعراب والتعريف/التنكير، ويوافق ما بعده في التذكير والتأنيث، ويبقى مفردًا.</div>`,
+q:[['ما الاسم الذي يصفه النعت؟',['المنعوت','التابع','المبتدأ دائمًا'],0,'الاسم الموصوف يسمّى المنعوت.'],
+['في «مررتُ بطريقٍ طويلٍ» إعراب «طويلٍ»:',['مفعول به منصوب','خبر مرفوع','نعت مجرور بالكسرة'],2,'يتبع «طريقٍ» المجرور بالباء.'],
+['أي جملة فيها نعت جملة فعلية؟',['رأيتُ طفلًا يركضُ.','رأيتُ الطفلَ.','الطفلُ سعيدٌ.'],0,'«يركضُ» جملة فعلية جاءت بعد نكرة «طفلًا».'],
+['في «جاءت فتاةٌ حسنٌ خُلُقُها» نوع النعت:',['حقيقي','سببي','حال'],1,'«حسنٌ» يصف الخُلُق المتعلّق بالفتاة، ولذلك ذُكّر.'],
+['ما الذي يميّز النعت الحقيقي في المطابقة؟',['يتبع منعوته في الإعراب فقط','يتبع ما بعده فقط','يطابق منعوته في الإعراب والتعريف والتنكير والتذكير والتأنيث والعدد'],2,'هذه هي أوجه مطابقة النعت الحقيقي.'],
+['«جاء الطالبُ يحملُ كتابًا»: جملة «يحملُ كتابًا»:',['نعت في محل رفع','حال في محل نصب','نعت في محل نصب'],1,'جاءت بعد معرفة «الطالبُ»، فهي حال.'],
+['ما وظيفة النعت إذا جاء بعد معرفة مثل «محمدٌ الكريمُ»؟',['تخصيص المنعوت','توضيح المنعوت','تأكيد المنعوت'],1,'النعت يوضّح المعرفة ويخصّص النكرة.']]}
+];
+const X=[30,-40,-70,-10,60,70,0],RK=['كاتب مبتدئ','فارس الكلمات','وزير البيان','أمير البيان','ملك البيان'],RE=['📝','🛡️','📜','🏰','👑'];
+let S={st:Array(7).fill(0),xp:0},P,rs=0;
+try{const r=JSON.parse(localStorage.getItem('mb_nat3')||'null');if(r&&r.st&&r.st.length===7)S=r}catch(e){}
+const save=()=>{try{localStorage.setItem('mb_nat3',JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),app=$('#app'),done=()=>S.st.filter(x=>x>0).length;
+const stars=n=>'⭐'.repeat(n)+'☆'.repeat(3-n);
+function hud(){const d=done(),r=d>=7?4:d>=6?3:d>=4?2:d>=2?1:0;$('#hud').innerHTML=`<div class="hud panel"><div class="av">${RE[r]}</div><div class="hm">${RK[r]}<div class="track"><i style="width:${d/7*100}%"></i></div></div><div class="chip">⭐ ${S.st.reduce((a,b)=>a+b,0)}</div><div class="chip">✨ ${S.xp}</div></div>`}
+function go(f){hud();f();window.scrollTo({top:0})}
+function map(){go(()=>{const cur=S.st.findIndex(x=>!x);
+app.innerHTML=`<div class="hero"><div class="crown">🏰</div><h1 class="logo">مملكة البيان</h1><p class="sub">مغامرة النعت · أنهِ المراحل واجمع النجوم</p></div>
+<ol class="map">${L.map((l,i)=>{const lock=i>0&&!S.st[i-1];return`<li class="node ${lock?'lock':''} ${i===cur&&!lock?'cur':''}" style="--x:${X[i]}px"><button class="nb" data-i="${i}" aria-label="${l.n}">${lock?'🔒':l.i}</button><div class="nl">${i+1}. ${l.n}</div><div class="st">${S.st[i]?stars(S.st[i]):''}</div></li>`}).join('')}</ol>
+<div class="panel foot"><div><b>إعداد الطالب:</b> مجد خالد وليد اشبير</div><div><b>الصف:</b> حادي عشر علمي 1</div><div><b>بإشراف:</b> أ. حسن شلش</div><div class="row"><button class="btn alt" id="rs">↻ إعادة الرحلة</button></div></div>`;
+app.querySelectorAll('.nb').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i>0&&!S.st[i-1])return;lesson(i)});
+$('#rs').onclick=e=>{if(!rs){rs=1;e.target.textContent='اضغط مرة أخرى للتأكيد';return}rs=0;S={st:Array(7).fill(0),xp:0};save();map()}})}
+function lesson(i){go(()=>{const l=L[i];app.innerHTML=`<div class="panel"><div class="row" style="justify-content:space-between;margin:0 0 8px"><button class="btn alt" id="bk" style="font-size:1rem;padding:2px 14px">→ الخريطة</button><span class="chip">المرحلة ${i+1}</span></div><h2>${l.i} ${l.n}</h2><div class="owl"><div class="e">🦉</div><div class="panel bubble">${l.say}</div></div>${l.learn}<div class="row"><button class="btn" id="st">⚔️ ابدأ التحدّي</button></div></div>`;
+$('#bk').onclick=map;$('#st').onclick=()=>play(i)})}
+function play(i){P={i,k:0,h:3};ask()}
+function ask(){go(()=>{const l=L[P.i],[q,o,a,w]=l.q[P.k];P.o=o.map((t,j)=>[t,j===a]).sort(()=>Math.random()-.5);P.w=w;P.lock=0;
+app.innerHTML=`<div class="qtop"><button class="x" id="ex" aria-label="خروج">✕</button><div class="track"><i style="width:${P.k/l.q.length*100}%"></i></div><div class="hearts">${'❤️'.repeat(P.h)+'🤍'.repeat(3-P.h)}</div></div><div class="panel qbox"><div class="mon">${l.m}</div><h2>${q}</h2><div class="opts">${P.o.map((x,j)=>`<button class="opt" data-j="${j}">${x[0]}</button>`).join('')}</div></div><div id="fb"></div>`;
+$('#ex').onclick=map;app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(b))})}
+function pick(b){if(P.lock)return;P.lock=1;const ok=P.o[+b.dataset.j][1],l=L[P.i];
+app.querySelectorAll('.opt').forEach((x,k)=>{x.disabled=true;if(P.o[k][1])x.classList.add('good')});
+if(!ok){b.classList.add('bad');P.h--}
+$('.hearts').textContent='❤️'.repeat(P.h)+'🤍'.repeat(3-P.h);
+const dead=P.h<=0,last=P.k===l.q.length-1;
+$('#fb').innerHTML=`<div class="fb panel ${ok?'g':'b'}"><b>${ok?'أحسنت! ✨':'ليست الإجابة الصحيحة 💥'}</b><p>${P.w}</p><div class="row" style="margin:0"><button class="btn" id="nx">${dead||last?'النتيجة':'تابع ←'}</button></div></div>`;
+$('#nx').onclick=()=>dead?lose():last?win():(P.k++,ask());$('#nx').scrollIntoView({block:'nearest',behavior:'smooth'})}
+function win(){const i=P.i,n=P.h,first=!S.st[i];S.st[i]=Math.max(S.st[i],n);if(first)S.xp+=50+n*10;save();
+go(()=>{app.innerHTML=`<div class="panel res"><div class="big">${i===6?'👑':'🏆'}</div><h2>${i===6?'أنت ملك البيان!':'أحسنت! أنهيتَ المرحلة'}</h2><div class="stars">${stars(n)}</div><p>${first?`حصلتَ على <b>${50+n*10}</b> نقطة خبرة ✨`:'تم حفظ أفضل نتيجة لك.'}</p><div class="row"><button class="btn alt" id="rp">↻ أعد المرحلة</button>${i<6?'<button class="btn" id="nm">المرحلة التالية ←</button>':''}<button class="btn alt" id="mp">🗺️ الخريطة</button></div></div>`;
+$('#rp').onclick=()=>play(i);$('#mp').onclick=map;if(i<6)$('#nm').onclick=()=>lesson(i+1)})}
+function lose(){const i=P.i;go(()=>{app.innerHTML=`<div class="panel res"><div class="big">💔</div><h2>نفدت القلوب!</h2><p>لا بأس أيها الفارس، راجع الدرس ثم عُد أقوى.</p><div class="row"><button class="btn" id="rp">↻ حاول مجددًا</button><button class="btn alt" id="rv">📖 راجع الدرس</button></div></div>`;$('#rp').onclick=()=>play(i);$('#rv').onclick=()=>lesson(i)})}
+map();
+</script>
+</body>
+</html>
